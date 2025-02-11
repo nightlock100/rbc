@@ -197,6 +197,50 @@
             });
         })();
     </script>
+	
+	     <input type="file" id="importFile" accept=".txt" /><br>
+<button id="import">Import Data</button><br>
+         <button id="export">export</button><br>
+
+<script>
+    // Import functionality  
+    document.getElementById("import").onclick = () => {
+        const fileInput = document.getElementById("importFile");
+        const file = fileInput.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const importedData = event.target.result;
+                localStorage.setItem("RetroBowlCollege.0.savedata.ini", importedData);
+                alert('Data imported successfully!');
+            };
+            reader.readAsText(file);
+        } else {
+            alert('Please select a file to import.');
+        }
+    };
+
+    document.getElementById("export").onclick = () => {
+        const exportedData = localStorage.getItem("RetroBowlCollege.0.savedata.ini");
+
+        if (exportedData) {
+            const blob = new Blob([exportedData], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'exportedData.txt'; // Name of the exported file  
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('Data exported successfully!');
+        } else {
+            alert('No data found to export.');
+        }
+    };
+
+</script>
     <!-- Poki end -->
 
     <!-- Builtin injector for injecting google analytics code -->
